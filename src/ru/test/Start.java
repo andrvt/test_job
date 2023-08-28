@@ -1,5 +1,6 @@
 package ru.test;
 
+
 import java.io.File;
 import java.util.Comparator;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.stream.DoubleStream;
 import ru.test.dto.Ticket;
 import ru.test.util.FileUtil;
 import static ru.test.util.Message.msg;
+
 
 
 public class Start {
@@ -67,17 +69,17 @@ public class Start {
 			List<Ticket> ticks = item.getValue();
 			msg("           Найдено рейсов : "+ticks.size());
 			long time=  ticks.stream().min(Comparator.comparing(Ticket::getDuration)).get().getDuration();
-			msg("Минимальное время полета  : "+time/60 +" часов " +time%60+" минут" +" ("+time+" минут)" );
-			double avg = ticks.stream().collect(Collectors.averagingInt(Ticket::getPrice)).doubleValue(); 
-			msg("    Средняя цена билета   : "+String.format("%.2f",avg) );
-			DoubleStream sortedPrice = ticks.stream().mapToDouble(Ticket::getPrice).sorted();
-			double mediana = ticks.size()%2==0?
-					sortedPrice.skip(ticks.size()/2-1).limit(2).average().getAsDouble():
-					sortedPrice.skip(ticks.size()/2).findFirst().getAsDouble();	
-
-			msg("    Медиана цена билета   : "+String.format("%.2f",mediana) );
-			msg("Разница между средней и медианой : "+String.format("%.2f",Math.abs(mediana-avg)) );
+			msg("Минимальное время полета  : "+time/60 +" часов " +time%60+" минут" +" ("+time+" минут)" );		
 		}
+		double avg = list.stream().collect(Collectors.averagingInt(Ticket::getPrice)).doubleValue(); 
+		DoubleStream sortedPrice = list.stream().mapToDouble(Ticket::getPrice).sorted();
+		double mediana = list.size()%2==0?
+				sortedPrice.skip(list.size()/2-1).limit(2).average().getAsDouble():
+				sortedPrice.skip(list.size()/2).findFirst().getAsDouble();	
+	    msg("----------------------------------------------------------");
+	    msg("    Средняя цена билета   : "+String.format("%.2f",avg) );
+		msg("    Медиана цена билета   : "+String.format("%.2f",mediana) );
+		msg("Разница между средней и медианой : "+String.format("%.2f",Math.abs(mediana-avg)) );
 		
 	}
 	private static void help_msg() {
